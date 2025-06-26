@@ -39,17 +39,18 @@ export class PerfilComponent implements OnInit {
             `https://ucvbotbackend.onrender.com/api/perfil?user_uid=${usuario.user_uid}`
           )
           .subscribe({
-            next: (data: any) => {
-              this.datosUsuario = {
-                nombre: data.v_userName || '',
-                apellidoPaterno: data.v_apellidoPaterno || '',
-                apellidoMaterno: data.v_apellidoMaterno || '',
-                correo: data.v_email || '',
-                usuario: data.v_username || '',
-                foto: '',
-                user_uid: usuario.user_uid || '',
-              };
-            },
+                  next: (data: any) => {
+        console.log('🧾 Respuesta del perfil:', data); // <-- Agrega esto
+        this.datosUsuario = {
+          nombre: data.v_userName || '',
+          apellidoPaterno: data.v_apellidoPaterno || '',
+          apellidoMaterno: data.v_apellidoMaterno || '',
+          correo: data.v_email || '',
+          usuario: data.v_username || '', // aquí vendría vacío si no está en BD
+          foto: '',
+          user_uid: usuario.user_uid || '',
+        };
+      },
             error: (error) => {
               console.error('❌ Error al obtener perfil:', error);
             },
