@@ -62,30 +62,30 @@ export class PerfilComponent implements OnInit {
     this.modoEdicion = !this.modoEdicion;
   }
 
-  guardarCambios(): void {
-    if (this.datosUsuario.user_uid) {
-      const datosActualizados = {
-        nombre: this.datosUsuario.nombre,
-        apellidoPaterno: this.datosUsuario.apellidoPaterno,
-        apellidoMaterno: this.datosUsuario.apellidoMaterno,
-        correo: this.datosUsuario.correo,
-        usuario: this.datosUsuario.usuario,
-        user_uid: this.datosUsuario.user_uid,
-      };
+guardarCambios(): void {
+  if (this.datosUsuario.user_uid) {
+    const datosActualizados = {
+      v_userName: this.datosUsuario.nombre,
+      v_apellidoPaterno: this.datosUsuario.apellidoPaterno,
+      v_apellidoMaterno: this.datosUsuario.apellidoMaterno,
+      v_email: this.datosUsuario.correo,
+      v_username: this.datosUsuario.usuario,
+      user_uid: this.datosUsuario.user_uid,
+    };
 
-      this.http
-        .put('https://ucvbotbackend.onrender.com/api/perfil', datosActualizados)
-        .subscribe({
-          next: () => {
-            console.log('✅ Perfil actualizado correctamente');
-            this.modoEdicion = false;
-          },
-          error: (err) => {
-            console.error('❌ Error al guardar los cambios:', err);
-          },
-        });
-    }
+    this.http
+      .put('https://ucvbotbackend.onrender.com/api/perfil', datosActualizados)
+      .subscribe({
+        next: () => {
+          console.log('✅ Perfil actualizado correctamente');
+          this.modoEdicion = false;
+        },
+        error: (err) => {
+          console.error('❌ Error al guardar los cambios:', err);
+        },
+      });
   }
+}
 
   volverAlChat(): void {
     window.location.href = '/chat';
