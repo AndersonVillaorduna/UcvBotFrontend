@@ -57,7 +57,7 @@ export class IaService {
     student_id: string;
     nombre: string;
   }): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/nivel/nivel`, data, {
+    return this.http.post<any>(`${this.baseUrl}/level/nivel`, data, {
       headers: this.getHeaders(),
     });
   }
