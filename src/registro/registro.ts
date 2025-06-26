@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './registro.html',
-  styleUrls: ['./registro.scss']
+  styleUrls: ['./registro.scss'],
 })
 export class Registro {
   username: string = '';
@@ -29,7 +29,8 @@ export class Registro {
     }
 
     if (!this.email.endsWith('@ucvvirtual.edu.pe')) {
-      this.registroError = 'El correo debe ser institucional (@ucvvirtual.edu.pe).';
+      this.registroError =
+        'El correo debe ser institucional (@ucvvirtual.edu.pe).';
       return;
     }
 
@@ -39,30 +40,30 @@ export class Registro {
       apellidoMaterno: this.apellidoMaterno,
       carrera: this.carrera,
       email: this.email,
-      password: this.password
+      password: this.password,
     };
 
-    fetch('http://localhost:5000/api/registro', {
+    fetch('https://ucvbotbackend.onrender.com/api/registro', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-    .then(async response => {
-      if (response.ok) {
-        const json = await response.json();
-        alert('Registro exitoso!');
-        this.router.navigate(['/login']);
-      } else {
-        const error = await response.json();
-        this.registroError = error.error || 'Error en el registro.';
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      this.registroError = 'No se pudo conectar con el servidor.';
-    });
+      .then(async (response) => {
+        if (response.ok) {
+          const json = await response.json();
+          alert('Registro exitoso!');
+          this.router.navigate(['/login']);
+        } else {
+          const error = await response.json();
+          this.registroError = error.error || 'Error en el registro.';
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        this.registroError = 'No se pudo conectar con el servidor.';
+      });
   }
 
   goTologin(): void {

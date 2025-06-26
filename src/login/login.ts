@@ -45,7 +45,7 @@ export class Login implements OnInit {
 
     const usuario = this.email.trim().split('@')[0];
 
-    fetch('http://localhost:5000/api/login', {
+    fetch('https://ucvbotbackend.onrender.com/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -53,20 +53,23 @@ export class Login implements OnInit {
         password: this.password,
       }),
     })
-      .then(async response => {
+      .then(async (response) => {
         this.loading = false;
 
         if (response.ok) {
           const res = await response.json();
 
           if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('usuario', JSON.stringify({
-              user_uid: res.user_uid,
-              nombre: res.nombre || 'Sin nombre',
-              apellido: res.apellido || 'Sin apellido',
-              correo: this.email,
-              usuario: usuario
-            }));
+            localStorage.setItem(
+              'usuario',
+              JSON.stringify({
+                user_uid: res.user_uid,
+                nombre: res.nombre || 'Sin nombre',
+                apellido: res.apellido || 'Sin apellido',
+                correo: this.email,
+                usuario: usuario,
+              })
+            );
           }
 
           alert('✅ Inicio de sesión exitoso');
@@ -77,7 +80,7 @@ export class Login implements OnInit {
           console.error(res.error || 'Error de autenticación');
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
         this.loading = false;
         this.loginError = true;
@@ -88,4 +91,3 @@ export class Login implements OnInit {
     this.router.navigate(['/registro']);
   }
 }
-

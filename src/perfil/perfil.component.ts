@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, HttpClientModule, FormsModule],
   templateUrl: './perfil.component.html',
-  styleUrls: ['./perfil.component.scss']
+  styleUrls: ['./perfil.component.scss'],
 })
 export class PerfilComponent implements OnInit {
   datosUsuario: any = {
@@ -20,7 +20,7 @@ export class PerfilComponent implements OnInit {
     correo: '',
     usuario: '',
     foto: '',
-    user_uid: ''
+    user_uid: '',
   };
 
   modoEdicion = false;
@@ -34,7 +34,10 @@ export class PerfilComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
       if (usuario.user_uid) {
-        this.http.get(`http://localhost:5000/api/perfil?user_uid=${usuario.user_uid}`)
+        this.http
+          .get(
+            `https://ucvbotbackend.onrender.com/api/perfil?user_uid=${usuario.user_uid}`
+          )
           .subscribe({
             next: (data: any) => {
               this.datosUsuario = {
@@ -44,12 +47,12 @@ export class PerfilComponent implements OnInit {
                 correo: data.correo || '',
                 usuario: data.usuario || '',
                 foto: data.foto || '',
-                user_uid: data.user_uid || ''
+                user_uid: data.user_uid || '',
               };
             },
             error: (error) => {
               console.error('❌ Error al obtener perfil:', error);
-            }
+            },
           });
       }
     }
@@ -67,18 +70,20 @@ export class PerfilComponent implements OnInit {
         apellidoPaterno: this.datosUsuario.apellidoPaterno,
         apellidoMaterno: this.datosUsuario.apellidoMaterno,
         foto: this.datosUsuario.foto,
-        user_uid: this.datosUsuario.user_uid
+        user_uid: this.datosUsuario.user_uid,
       };
 
-      this.http.put('http://localhost:5000/api/perfil', datosActualizados).subscribe({
-        next: () => {
-          console.log('✅ Perfil actualizado correctamente');
-          this.modoEdicion = false;
-        },
-        error: (err) => {
-          console.error('❌ Error al guardar los cambios:', err);
-        }
-      });
+      this.http
+        .put('https://ucvbotbackend.onrender.com/api/perfil', datosActualizados)
+        .subscribe({
+          next: () => {
+            console.log('✅ Perfil actualizado correctamente');
+            this.modoEdicion = false;
+          },
+          error: (err) => {
+            console.error('❌ Error al guardar los cambios:', err);
+          },
+        });
     }
   }
 

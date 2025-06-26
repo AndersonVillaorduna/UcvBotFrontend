@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsuarioService {
   constructor(
@@ -16,9 +16,11 @@ export class UsuarioService {
       const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
       if (!usuario.user_uid) return null;
 
-      const response = await this.http.get(
-        `http://localhost:5000/api/perfil?user_uid=${usuario.user_uid}`
-      ).toPromise();
+      const response = await this.http
+        .get(
+          `https://ucvbotbackend.onrender.com/api/perfil?user_uid=${usuario.user_uid}`
+        )
+        .toPromise();
 
       return response;
     } else {
