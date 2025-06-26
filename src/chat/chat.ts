@@ -55,12 +55,13 @@ export class Chat implements OnInit {
       };
     }
 
-    this.usuario = await this.usuarioService.obtenerPerfil();
+  this.usuario = await this.usuarioService.obtenerPerfil();
 
-    if (this.usuario) {
-      this.nombreUsuario = `${this.usuario.nombre || ''} ${this.usuario.apellidoPaterno || ''} ${this.usuario.apellidoMaterno || ''}`.trim();
-      const nombres = this.nombreUsuario.split(' ');
-      this.iniciales = nombres.map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  if (this.usuario) {
+    this.nombreUsuario = `${this.usuario.v_userName || ''} ${this.usuario.v_apellidoPaterno || ''} ${this.usuario.v_apellidoMaterno || ''}`.trim();
+    const nombres = this.nombreUsuario.split(' ');
+    this.iniciales = nombres.map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
 
       if (typeof window !== 'undefined') {
         const sessionGuardada = localStorage.getItem('session_id');

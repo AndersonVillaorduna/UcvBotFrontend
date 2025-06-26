@@ -11,21 +11,12 @@ export class UsuarioService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-  async obtenerPerfil(): Promise<any> {
-    if (isPlatformBrowser(this.platformId)) {
-      const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
-      if (!usuario.user_uid) return null;
-
-      const response = await this.http
-        .get(
-          `https://ucvbotbackend.onrender.com/api/perfil?user_uid=${usuario.user_uid}`
-        )
-        .toPromise();
-
-      return response;
-    } else {
-      // SSR: evita usar localStorage
-      return null;
-    }
+async obtenerPerfil(): Promise<any> {
+  if (isPlatformBrowser(this.platformId)) {
+    const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+    return usuario.user_uid ? usuario : null;
   }
+  return null;
+}
+
 }

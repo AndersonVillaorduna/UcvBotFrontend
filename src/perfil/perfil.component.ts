@@ -41,13 +41,13 @@ export class PerfilComponent implements OnInit {
           .subscribe({
             next: (data: any) => {
               this.datosUsuario = {
-                nombre: data.nombre || '',
-                apellidoPaterno: data.apellidoPaterno || '',
-                apellidoMaterno: data.apellidoMaterno || '',
-                correo: data.correo || '',
-                usuario: data.usuario || '',
-                foto: data.foto || '',
-                user_uid: data.user_uid || '',
+                nombre: data.v_userName || '',
+                apellidoPaterno: data.v_apellidoPaterno || '',
+                apellidoMaterno: data.v_apellidoMaterno || '',
+                correo: data.v_email || '',
+                usuario: data.v_username || '',
+                foto: '',
+                user_uid: usuario.user_uid || '',
               };
             },
             error: (error) => {
@@ -64,12 +64,12 @@ export class PerfilComponent implements OnInit {
 
   guardarCambios(): void {
     if (this.datosUsuario.user_uid) {
-      // Excluye correo y usuario del PUT
       const datosActualizados = {
         nombre: this.datosUsuario.nombre,
         apellidoPaterno: this.datosUsuario.apellidoPaterno,
         apellidoMaterno: this.datosUsuario.apellidoMaterno,
-        foto: this.datosUsuario.foto,
+        correo: this.datosUsuario.correo,
+        usuario: this.datosUsuario.usuario,
         user_uid: this.datosUsuario.user_uid,
       };
 
