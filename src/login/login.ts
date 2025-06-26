@@ -65,7 +65,8 @@ export class Login implements OnInit {
               JSON.stringify({
                 user_uid: res.user_uid,
                 nombre: res.nombre || 'Sin nombre',
-                apellido: res.apellido || 'Sin apellido',
+                apellidoPaterno: res.apellidoPaterno || '',
+                apellidoMaterno: res.apellidoMaterno || '',
                 correo: this.email,
                 usuario: usuario,
               })
