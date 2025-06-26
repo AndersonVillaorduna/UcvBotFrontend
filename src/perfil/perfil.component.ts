@@ -18,7 +18,6 @@ export class PerfilComponent implements OnInit {
     apellidoPaterno: '',
     apellidoMaterno: '',
     correo: '',
-    usuario: '',
     foto: '',
     user_uid: '',
   };
@@ -39,18 +38,17 @@ export class PerfilComponent implements OnInit {
             `https://ucvbotbackend.onrender.com/api/perfil?user_uid=${usuario.user_uid}`
           )
           .subscribe({
-                  next: (data: any) => {
-        console.log('🧾 Respuesta del perfil:', data); // <-- Agrega esto
-        this.datosUsuario = {
-          nombre: data.v_userName || '',
-          apellidoPaterno: data.v_apellidoPaterno || '',
-          apellidoMaterno: data.v_apellidoMaterno || '',
-          correo: data.v_email || '',
-          usuario: data.v_username || '', // aquí vendría vacío si no está en BD
-          foto: '',
-          user_uid: usuario.user_uid || '',
-        };
-      },
+            next: (data: any) => {
+              console.log('🧾 Respuesta del perfil:', data);
+              this.datosUsuario = {
+                nombre: data.v_userName || '',
+                apellidoPaterno: data.v_apellidoPaterno || '',
+                apellidoMaterno: data.v_apellidoMaterno || '',
+                correo: data.v_email || '',
+                foto: '', // Aquí puedes cargar la imagen desde la BD si se implementa
+                user_uid: usuario.user_uid || '',
+              };
+            },
             error: (error) => {
               console.error('❌ Error al obtener perfil:', error);
             },
@@ -63,30 +61,29 @@ export class PerfilComponent implements OnInit {
     this.modoEdicion = !this.modoEdicion;
   }
 
-guardarCambios(): void {
-  if (this.datosUsuario.user_uid) {
-    const datosActualizados = {
-      v_userName: this.datosUsuario.nombre,
-      v_apellidoPaterno: this.datosUsuario.apellidoPaterno,
-      v_apellidoMaterno: this.datosUsuario.apellidoMaterno,
-      v_email: this.datosUsuario.correo,
-      v_username: this.datosUsuario.usuario,
-      user_uid: this.datosUsuario.user_uid,
-    };
+  guardarCambios(): void {
+    if (this.datosUsuario.user_uid) {
+      const datosActualizados = {
+        v_userName: this.datosUsuario.nombre,
+        v_apellidoPaterno: this.datosUsuario.apellidoPaterno,
+        v_apellidoMaterno: this.datosUsuario.apellidoMaterno,
+        v_email: this.datosUsuario.correo,
+        user_uid: this.datosUsuario.user_uid,
+      };
 
-    this.http
-      .put('https://ucvbotbackend.onrender.com/api/perfil', datosActualizados)
-      .subscribe({
-        next: () => {
-          console.log('✅ Perfil actualizado correctamente');
-          this.modoEdicion = false;
-        },
-        error: (err) => {
-          console.error('❌ Error al guardar los cambios:', err);
-        },
-      });
+      this.http
+        .put('https://ucvbotbackend.onrender.com/api/perfil', datosActualizados)
+        .subscribe({
+          next: () => {
+            console.log('✅ Perfil actualizado correctamente');
+            this.modoEdicion = false;
+          },
+          error: (err) => {
+            console.error('❌ Error al guardar los cambios:', err);
+          },
+        });
+    }
   }
-}
 
   volverAlChat(): void {
     window.location.href = '/chat';
