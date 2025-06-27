@@ -19,13 +19,16 @@
   <div class="chat-main">
     <header class="chat-header">
       <div class="logo">
-        <img src="../../public/vot .jpg" alt="bot" />
+       <img src="assets/vot.jpg" alt="bot" />
         <span><strong>Ucv</strong><span class="barra">//</span><span class="red">Bot</span></span>
       </div>
 
       <div class="user-menu">
         <div class="avatar" (click)="toggleMenu()">{{ iniciales }}</div>
-        <div class="menu-dropdown" *ngIf="mostrarMenu">
+                  <div class="avatar" (click)="toggleMenu()">
+              <span class="iniciales">{{ iniciales }}</span>
+            </div>
+
           <button (click)="irPerfil()"><i class="fas fa-user-circle"></i> Perfil</button>
           <button (click)="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Salir</button>
         </div>

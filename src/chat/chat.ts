@@ -46,39 +46,52 @@ export class Chat implements OnInit {
     private location: Location
   ) {}
 
-  async ngOnInit() {
-    if (typeof window !== 'undefined') {
+async ngOnInit() {
+  if (typeof window !== 'undefined') {
+    history.pushState(null, '', location.href);
+    window.onpopstate = () => {
       history.pushState(null, '', location.href);
-      window.onpopstate = () => {
-        history.pushState(null, '', location.href);
-      };
-    }
+    };
+  }
 
+  try {
     this.usuario = await this.usuarioService.obtenerPerfil();
+    console.log("👤 Usuario recibido:", this.usuario);
 
     if (this.usuario) {
-      const partes = [
-        this.usuario.v_userName?.trim(),
-        this.usuario.v_apellidoPaterno?.trim(),
-        this.usuario.v_apellidoMaterno?.trim()
-      ].filter(Boolean);
+      const nombre = this.usuario.v_userName?.trim() || '';
+      const paterno = this.usuario.v_apellidoPaterno?.trim() || '';
+      const materno = this.usuario.v_apellidoMaterno?.trim() || '';
 
-      this.nombreUsuario = partes.join(' ');
+      const partes = [nombre, paterno, materno].filter(Boolean);
+      this.nombreUsuario = partes.join(' ').trim();
+
       this.iniciales = partes.map(p => p.charAt(0)).join('').substring(0, 2).toUpperCase();
 
-      if (typeof window !== 'undefined') {
-        const sessionGuardada = localStorage.getItem('session_id');
-        if (sessionGuardada) {
-          this.sessionId = sessionGuardada;
-          this.cargarHistorial();
-        } else {
-          this.nuevoChat();
-        }
+      console.log("🧩 Partes:", partes);
+      console.log("🔠 Iniciales:", this.iniciales);
+
+      if (!this.iniciales) {
+        console.warn("⚠️ No se pudieron generar iniciales. Verifica los datos del backend.");
       }
+
+      const sessionGuardada = localStorage.getItem('session_id');
+      if (sessionGuardada) {
+        this.sessionId = sessionGuardada;
+        this.cargarHistorial();
+      } else {
+        this.nuevoChat();
+      }
+
       this.cargarPreguntas();
       this.cargarSesionesAnteriores();
+    } else {
+      console.warn("⚠️ No se obtuvo información del usuario.");
     }
+  } catch (error) {
+    console.error("❌ Error al obtener perfil:", error);
   }
+}
 
   toggleMenu(): void {
     this.mostrarMenu = !this.mostrarMenu;
