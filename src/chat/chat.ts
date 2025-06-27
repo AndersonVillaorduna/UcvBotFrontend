@@ -59,22 +59,22 @@ export class Chat implements OnInit {
       console.log("👤 Usuario recibido:", this.usuario);
 
       if (this.usuario) {
-        const nombreCompleto = this.usuario.v_userName?.trim() || '';
-        const partes = nombreCompleto.split(' ').filter(Boolean);
-        this.nombreUsuario = nombreCompleto;
+        const nombre = this.usuario.nombre || '';
+        const apellidoPaterno = this.usuario.apellidoPaterno || '';
+        const apellidoMaterno = this.usuario.apellidoMaterno || '';
 
-        if (partes.length >= 2) {
-          this.iniciales = partes[0][0] + partes[1][0];
-        } else if (partes.length === 1) {
-          this.iniciales = partes[0][0];
-        } else {
-          this.iniciales = 'US';
-        }
+        // Nombre completo mostrado
+        this.nombreUsuario = `${nombre} ${apellidoPaterno} ${apellidoMaterno}`.trim();
 
-        this.iniciales = this.iniciales.toUpperCase();
+        // Iniciales: primera letra del nombre y del apellido paterno
+        const inicialNombre = nombre.charAt(0) || '';
+        const inicialApellido = apellidoPaterno.charAt(0) || '';
 
-        console.log("🧩 Partes del nombre:", partes);
+        this.iniciales = (inicialNombre + inicialApellido).toUpperCase() || 'US';
+
+        console.log("🧩 Nombre completo:", this.nombreUsuario);
         console.log("🔠 Iniciales:", this.iniciales);
+
 
         const sessionGuardada = localStorage.getItem('session_id');
         if (sessionGuardada) {
