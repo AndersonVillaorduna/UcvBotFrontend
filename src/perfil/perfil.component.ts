@@ -41,11 +41,11 @@ export class PerfilComponent implements OnInit {
             next: (data: any) => {
               console.log('🧾 Respuesta del perfil:', data);
               this.datosUsuario = {
-                nombre: data.v_userName || '',
-                apellidoPaterno: data.v_apellidoPaterno || '',
-                apellidoMaterno: data.v_apellidoMaterno || '',
-                correo: data.v_email || '',
-                foto: '', // Aquí puedes cargar la imagen desde la BD si se implementa
+                nombre: data.nombre || '',
+                apellidoPaterno: data.apellidoPaterno || '',
+                apellidoMaterno: data.apellidoMaterno || '',
+                correo: data.correo || '',
+                foto: data.foto || '',
                 user_uid: usuario.user_uid || '',
               };
             },
@@ -64,10 +64,10 @@ export class PerfilComponent implements OnInit {
   guardarCambios(): void {
     if (this.datosUsuario.user_uid) {
       const datosActualizados = {
-        v_userName: this.datosUsuario.nombre,
-        v_apellidoPaterno: this.datosUsuario.apellidoPaterno,
-        v_apellidoMaterno: this.datosUsuario.apellidoMaterno,
-        v_email: this.datosUsuario.correo,
+        nombre: this.datosUsuario.nombre,
+        apellidoPaterno: this.datosUsuario.apellidoPaterno,
+        apellidoMaterno: this.datosUsuario.apellidoMaterno,
+        foto: this.datosUsuario.foto,
         user_uid: this.datosUsuario.user_uid,
       };
 
