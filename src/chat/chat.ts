@@ -47,7 +47,6 @@ export class Chat implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // Bloquear botón "atrás" solo en navegador
     if (typeof window !== 'undefined') {
       history.pushState(null, '', location.href);
       window.onpopstate = () => {
@@ -55,13 +54,17 @@ export class Chat implements OnInit {
       };
     }
 
-  this.usuario = await this.usuarioService.obtenerPerfil();
+    this.usuario = await this.usuarioService.obtenerPerfil();
 
-  if (this.usuario) {
-    this.nombreUsuario = `${this.usuario.v_userName || ''} ${this.usuario.v_apellidoPaterno || ''} ${this.usuario.v_apellidoMaterno || ''}`.trim();
-    const nombres = this.nombreUsuario.split(' ');
-    this.iniciales = nombres.map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    if (this.usuario) {
+      const partes = [
+        this.usuario.v_userName?.trim(),
+        this.usuario.v_apellidoPaterno?.trim(),
+        this.usuario.v_apellidoMaterno?.trim()
+      ].filter(Boolean);
 
+      this.nombreUsuario = partes.join(' ');
+      this.iniciales = partes.map(p => p.charAt(0)).join('').substring(0, 2).toUpperCase();
 
       if (typeof window !== 'undefined') {
         const sessionGuardada = localStorage.getItem('session_id');
