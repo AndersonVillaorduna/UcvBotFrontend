@@ -19,17 +19,16 @@
   <div class="chat-main">
     <header class="chat-header">
       <div class="logo">
-        <img src="assets/vot.jpg" alt="bot" />
+        <img src="assets/bot.jpg" alt="bot" />s
         <span><strong>Ucv</strong><span class="barra">//</span><span class="red">Bot</span></span>
       </div>
 
       <div class="user-menu">
-        <div class="avatar" (click)="toggleMenu()">
-          <span class="iniciales">{{ iniciales }}</span>
+        <div class="avatar" (click)="toggleMenu()">{{ iniciales }}</div>
+        <div class="menu-dropdown" *ngIf="mostrarMenu">
+          <button (click)="irPerfil()"><i class="fas fa-user-circle"></i> Perfil</button>
+          <button (click)="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Salir</button>
         </div>
-
-        <button (click)="irPerfil()"><i class="fas fa-user-circle"></i> Perfil</button>
-        <button (click)="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Salir</button>
       </div>
     </header>
 
@@ -58,39 +57,42 @@
 
       <!-- ✅ Botón para iniciar examen -->
       <div class="examen-boton-container" *ngIf="mostrarBotonExamen">
-        <button class="boton-flotante" (click)="abrirExamen()">📝 Dar examen</button>
-      </div>
+  <button class="boton-flotante" (click)="abrirExamen()">📝 Dar examen</button>
+</div>
+
 
       <!-- ✅ Examen tipo test con cronómetro -->
-      <div class="modal" *ngIf="mostrarModalExamen">
-        <div class="modal-contenido">
-          <h2>🧪 Examen Final</h2>
+<div class="modal" *ngIf="mostrarModalExamen">
+  <div class="modal-contenido">
+    <h2>🧪 Examen Final</h2>
 
-          <div *ngFor="let pregunta of examenPreguntas; let i = index" class="pregunta">
-            <p>{{ i + 1 }}. {{ pregunta.texto }}</p>
-            <div *ngFor="let opcion of pregunta.opciones">
-              <label>
-                <input type="radio"
-                      name="pregunta{{ i }}"
-                      [(ngModel)]="pregunta.respuestaSeleccionada"
-                      [value]="opcion">
-                {{ opcion }}
-              </label>
-            </div>
-          </div>
-
-          <div class="tiempo-restante">
-            ⏰ Tiempo restante: {{ tiempoRestante }} segundos
-          </div>
-
-          <button (click)="enviarExamen()" class="btn-finalizar">Finalizar examen</button>
-
-          <!-- ✅ Aquí va el mensaje del resultado del examen -->
-          <div *ngIf="mensajeFinal" class="mensaje-final">
-            {{ mensajeFinal }}
-          </div>
-        </div>
+    <div *ngFor="let pregunta of examenPreguntas; let i = index" class="pregunta">
+      <p>{{ i + 1 }}. {{ pregunta.texto }}</p>
+      <div *ngFor="let opcion of pregunta.opciones">
+        <label>
+          <input type="radio"
+                 name="pregunta{{ i }}"
+                 [(ngModel)]="pregunta.respuestaSeleccionada"
+                 [value]="opcion">
+          {{ opcion }}
+        </label>
       </div>
+    </div>
+
+    <div class="tiempo-restante">
+      ⏰ Tiempo restante: {{ tiempoRestante }} segundos
+    </div>
+
+    <button (click)="enviarExamen()" class="btn-finalizar">Finalizar examen</button>
+
+    <!-- ✅ Aquí va el mensaje del resultado del examen -->
+    <div *ngIf="mensajeFinal" class="mensaje-final">
+      {{ mensajeFinal }}
+    </div>
+  </div>
+</div>
+
+
     </main>
 
     <footer class="chat-footer">
