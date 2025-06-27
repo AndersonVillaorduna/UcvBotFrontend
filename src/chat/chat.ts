@@ -56,7 +56,7 @@ export class Chat implements OnInit {
 
     try {
       this.usuario = await this.usuarioService.obtenerPerfil();
-      console.log("👤 Usuario recibido:", this.usuario);
+
 
       if (this.usuario) {
         const nombre = this.usuario.nombre || '';
@@ -72,8 +72,6 @@ export class Chat implements OnInit {
 
         this.iniciales = (inicialNombre + inicialApellido).toUpperCase() || 'US';
 
-        console.log("🧩 Nombre completo:", this.nombreUsuario);
-        console.log("🔠 Iniciales:", this.iniciales);
 
 
         const sessionGuardada = localStorage.getItem('session_id');
