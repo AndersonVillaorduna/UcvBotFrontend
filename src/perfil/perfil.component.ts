@@ -19,6 +19,7 @@ export class PerfilComponent implements OnInit {
     apellidoMaterno: '',
     correo: '',
     foto: '',
+    usuario: '',
     user_uid: '',
   };
 
@@ -31,34 +32,44 @@ export class PerfilComponent implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+      const usuarioRaw = localStorage.getItem('usuario');
+      console.log('🧠 LocalStorage -> usuario:', usuarioRaw);
+
+      const usuario = JSON.parse(usuarioRaw || '{}');
+
       if (usuario.user_uid) {
-        this.http
-          .get(
-            `https://ucvbotbackend.onrender.com/api/perfil?user_uid=${usuario.user_uid}`
-          )
-          .subscribe({
-            next: (data: any) => {
-              console.log('🧾 Respuesta del perfil:', data);
-              this.datosUsuario = {
-                nombre: data.nombre || '',
-                apellidoPaterno: data.apellidoPaterno || '',
-                apellidoMaterno: data.apellidoMaterno || '',
-                correo: data.correo || '',
-                foto: data.foto || '',
-                user_uid: usuario.user_uid || '',
-              };
-            },
-            error: (error) => {
-              console.error('❌ Error al obtener perfil:', error);
-            },
-          });
+        const url = `https://ucvbotbackend.onrender.com/api/perfil?user_uid=${usuario.user_uid}`;
+        console.log('📡 Realizando petición GET a:', url);
+
+        this.http.get(url).subscribe({
+          next: (data: any) => {
+            console.log('🧾 Datos recibidos del backend:', data);
+
+            this.datosUsuario = {
+              nombre: data.nombre || '',
+              apellidoPaterno: data.apellidoPaterno || '',
+              apellidoMaterno: data.apellidoMaterno || '',
+              correo: data.correo || '',
+              foto: data.foto || '',
+              usuario: data.usuario || '',
+              user_uid: usuario.user_uid || '',
+            };
+
+            console.log('✅ datosUsuario final:', this.datosUsuario);
+          },
+          error: (error) => {
+            console.error('❌ Error al obtener perfil:', error);
+          },
+        });
+      } else {
+        console.warn('⚠️ No se encontró user_uid en localStorage');
       }
     }
   }
 
   toggleEdicion(): void {
     this.modoEdicion = !this.modoEdicion;
+    console.log(`✏️ Modo edición: ${this.modoEdicion}`);
   }
 
   guardarCambios(): void {
@@ -71,6 +82,8 @@ export class PerfilComponent implements OnInit {
         user_uid: this.datosUsuario.user_uid,
       };
 
+      console.log('📤 Enviando PUT con:', datosActualizados);
+
       this.http
         .put('https://ucvbotbackend.onrender.com/api/perfil', datosActualizados)
         .subscribe({
@@ -82,21 +95,28 @@ export class PerfilComponent implements OnInit {
             console.error('❌ Error al guardar los cambios:', err);
           },
         });
+    } else {
+      console.warn('⚠️ No se puede guardar: user_uid ausente');
     }
   }
 
   volverAlChat(): void {
+    console.log('↩️ Navegando de vuelta al chat...');
     window.location.href = '/chat';
   }
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      console.log('📷 Imagen seleccionada:', file.name);
       const reader = new FileReader();
       reader.onload = () => {
         this.datosUsuario.foto = reader.result as string;
+        console.log('🖼 Base64 cargado en foto:', this.datosUsuario.foto.substring(0, 30) + '...');
       };
       reader.readAsDataURL(file);
+    } else {
+      console.warn('📭 No se seleccionó ningún archivo');
     }
   }
 }

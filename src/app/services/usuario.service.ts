@@ -11,12 +11,14 @@ export class UsuarioService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-async obtenerPerfil(): Promise<any> {
-  if (isPlatformBrowser(this.platformId)) {
-    const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
-    return usuario.user_uid ? usuario : null;
+  async obtenerPerfil(): Promise<any> {
+    if (isPlatformBrowser(this.platformId)) {
+      const usuarioRaw = localStorage.getItem('usuario');
+      console.log('📥 usuario.service.ts -> localStorage:', usuarioRaw);
+      const usuario = JSON.parse(usuarioRaw || '{}');
+      return usuario.user_uid ? usuario : null;
+    }
+    console.warn('⚠️ Intento de acceder a localStorage en entorno no navegador');
+    return null;
   }
-  return null;
-}
-
 }
