@@ -46,52 +46,53 @@ export class Chat implements OnInit {
     private location: Location
   ) {}
 
-async ngOnInit() {
-  if (typeof window !== 'undefined') {
-    history.pushState(null, '', location.href);
-    window.onpopstate = () => {
+  async ngOnInit() {
+    if (typeof window !== 'undefined') {
       history.pushState(null, '', location.href);
-    };
-  }
-
-  try {
-    this.usuario = await this.usuarioService.obtenerPerfil();
-    console.log("👤 Usuario recibido:", this.usuario);
-
-    if (this.usuario) {
-      const nombre = this.usuario.v_userName?.trim() || '';
-      const paterno = this.usuario.v_apellidoPaterno?.trim() || '';
-      const materno = this.usuario.v_apellidoMaterno?.trim() || '';
-
-      const partes = [nombre, paterno, materno].filter(Boolean);
-      this.nombreUsuario = partes.join(' ').trim();
-
-      this.iniciales = partes.map(p => p.charAt(0)).join('').substring(0, 2).toUpperCase();
-
-      console.log("🧩 Partes:", partes);
-      console.log("🔠 Iniciales:", this.iniciales);
-
-      if (!this.iniciales) {
-        console.warn("⚠️ No se pudieron generar iniciales. Verifica los datos del backend.");
-      }
-
-      const sessionGuardada = localStorage.getItem('session_id');
-      if (sessionGuardada) {
-        this.sessionId = sessionGuardada;
-        this.cargarHistorial();
-      } else {
-        this.nuevoChat();
-      }
-
-      this.cargarPreguntas();
-      this.cargarSesionesAnteriores();
-    } else {
-      console.warn("⚠️ No se obtuvo información del usuario.");
+      window.onpopstate = () => {
+        history.pushState(null, '', location.href);
+      };
     }
-  } catch (error) {
-    console.error("❌ Error al obtener perfil:", error);
+
+    try {
+      this.usuario = await this.usuarioService.obtenerPerfil();
+      console.log("👤 Usuario recibido:", this.usuario);
+
+      if (this.usuario) {
+        const nombreCompleto = this.usuario.v_userName?.trim() || '';
+        const partes = nombreCompleto.split(' ').filter(Boolean);
+        this.nombreUsuario = nombreCompleto;
+
+        if (partes.length >= 2) {
+          this.iniciales = partes[0][0] + partes[1][0];
+        } else if (partes.length === 1) {
+          this.iniciales = partes[0][0];
+        } else {
+          this.iniciales = 'US';
+        }
+
+        this.iniciales = this.iniciales.toUpperCase();
+
+        console.log("🧩 Partes del nombre:", partes);
+        console.log("🔠 Iniciales:", this.iniciales);
+
+        const sessionGuardada = localStorage.getItem('session_id');
+        if (sessionGuardada) {
+          this.sessionId = sessionGuardada;
+          this.cargarHistorial();
+        } else {
+          this.nuevoChat();
+        }
+
+        this.cargarPreguntas();
+        this.cargarSesionesAnteriores();
+      } else {
+        console.warn("⚠️ No se obtuvo información del usuario.");
+      }
+    } catch (error) {
+      console.error("❌ Error al obtener perfil:", error);
+    }
   }
-}
 
   toggleMenu(): void {
     this.mostrarMenu = !this.mostrarMenu;
@@ -259,15 +260,13 @@ async ngOnInit() {
     alert(this.mensajeFinal);
   }
 
-  cargarPreguntas(){
-    this.iaService.cargarPreguntas()
-    .subscribe({
+  cargarPreguntas() {
+    this.iaService.cargarPreguntas().subscribe({
       next: (preguntas: string[]) => {
         this.preguntas = preguntas;
-        console.log("✅ Preguntas cargadas")
+        console.log("✅ Preguntas cargadas");
       },
       error: (err) => console.error("❌ Error al cargar preguntas:", err)
     });
   }
-
 }
