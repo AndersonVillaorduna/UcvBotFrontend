@@ -1,13 +1,24 @@
 <div class="perfil-container">
   <h1>Mi Perfil</h1>
-  <p class="subtitulo">Gestiona tu información personal y configuración de cuenta</p>
+  <p class="subtitulo">
+    Gestiona tu información personal y configuración de cuenta
+  </p>
 
   <div class="perfil-header">
     <div class="perfil-icono">
-      <img [src]="datosUsuario.foto || 'assets/usuario.png'" alt="Foto de perfil" class="foto-perfil" />
+      <img
+        [src]="datosUsuario.foto || 'assets/icons/user-circle.svg'"
+        alt="Foto de perfil"
+        class="foto-perfil"
+      />
     </div>
     <div class="perfil-info">
-      <p><strong>{{ datosUsuario.nombre }} {{ datosUsuario.apellidoPaterno }} {{ datosUsuario.apellidoMaterno }}</strong></p>
+      <p>
+        <strong
+          >{{ datosUsuario.nombre }} {{ datosUsuario.apellidoPaterno }}
+          {{ datosUsuario.apellidoMaterno }}</strong
+        >
+      </p>
       <p>{{ datosUsuario.correo }}</p>
       <span class="rol">Administrador Principal</span>
     </div>
@@ -17,29 +28,68 @@
     <h3>Información del Administrador</h3>
     <form>
       <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" name="nombre" [(ngModel)]="datosUsuario.nombre" [disabled]="!modoEdicion" />
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        [(ngModel)]="datosUsuario.nombre"
+        [disabled]="!modoEdicion"
+      />
 
       <label for="apellidoPaterno">Apellido Paterno</label>
-      <input type="text" id="apellidoPaterno" name="apellidoPaterno" [(ngModel)]="datosUsuario.apellidoPaterno" [disabled]="!modoEdicion" />
+      <input
+        type="text"
+        id="apellidoPaterno"
+        name="apellidoPaterno"
+        [(ngModel)]="datosUsuario.apellidoPaterno"
+        [disabled]="!modoEdicion"
+      />
 
       <label for="apellidoMaterno">Apellido Materno</label>
-      <input type="text" id="apellidoMaterno" name="apellidoMaterno" [(ngModel)]="datosUsuario.apellidoMaterno" [disabled]="!modoEdicion" />
+      <input
+        type="text"
+        id="apellidoMaterno"
+        name="apellidoMaterno"
+        [(ngModel)]="datosUsuario.apellidoMaterno"
+        [disabled]="!modoEdicion"
+      />
 
       <label for="correo">Correo Electrónico</label>
-      <input type="email" id="correo" name="correo" [(ngModel)]="datosUsuario.correo" disabled />
+      <input
+        type="email"
+        id="correo"
+        name="correo"
+        [(ngModel)]="datosUsuario.correo"
+        disabled
+      />
 
       <label for="usuario">Nombre de Usuario</label>
-      <input type="text" id="usuario" name="usuario" [(ngModel)]="datosUsuario.usuario" disabled />
+      <input
+        type="text"
+        id="usuario"
+        name="usuario"
+        [(ngModel)]="datosUsuario.usuario"
+        disabled
+      />
 
       <label for="imagen">Imagen de Perfil</label>
-      <input id="imagen" type="file" (change)="onFileSelected($event)" [disabled]="!modoEdicion" />
+      <input
+        id="imagen"
+        type="file"
+        (change)="onFileSelected($event)"
+        [disabled]="!modoEdicion"
+      />
 
       <div class="botones-accion">
         <button type="button" (click)="toggleEdicion()">
-          {{ modoEdicion ? 'Cancelar' : 'Editar Perfil' }}
+          {{ modoEdicion ? "Cancelar" : "Editar Perfil" }}
         </button>
-        <button *ngIf="modoEdicion" type="button" (click)="guardarCambios()">Guardar Cambios</button>
-        <button type="button" class="btn-volver" (click)="volverAlChat()">Volver al Chat</button>
+        <button *ngIf="modoEdicion" type="button" (click)="guardarCambios()">
+          Guardar Cambios
+        </button>
+        <button type="button" class="btn-volver" (click)="volverAlChat()">
+          Volver al Chat
+        </button>
       </div>
     </form>
   </div>
